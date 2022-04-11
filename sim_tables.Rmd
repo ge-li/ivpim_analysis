@@ -1,0 +1,231 @@
+---
+title: "Simulation Data Analysis"
+author: Li Ge
+output:
+  html_notebook:
+    toc: true
+    number_sections: true
+date: "`r Sys.Date()`"
+---
+
+# Data preprocessing 
+
+```{r}
+library(tidyverse)
+library(rsimsum)
+library(kableExtra)
+
+# get list of files
+rct_files <- list.files("./out", pattern = "sim_type.rct", full.names = TRUE)
+obs_files <- list.files("./out", pattern = "sim_type.obs", full.names = TRUE)
+
+# read output files
+rct_results <- do.call(rbind, lapply(rct_files, read.csv)) %>% tibble()
+obs_results <- do.call(rbind, lapply(obs_files, read.csv)) %>% tibble()
+
+# rename a column "methods" -> "method"
+rct_results <- rct_results %>% rename(method = methods)
+rct_results$method <- factor(rct_results$method, levels = c("iv", "itt", "pp"))
+
+obs_results <- obs_results %>% rename(method = methods)
+obs_results$method <- factor(obs_results$method, 
+                             levels = c("iv-correct", "iv-misspecified", 
+                                        "iv-marginal", "pp"))
+```
+
+# Generate tables for randomized controlled trials 
+```{r}
+# some custom function to extract and arrange information 
+table_block <- function(tidy_ss, control = list(p_c = 0.8, method = "itt"), digits = 3) {
+  tidy_ss %>%
+    filter(stat %in% c("bias", "cover", "empse", "modelse"),
+           p_c == control[[1]],
+           method == control[[2]]) %>%
+    select(n_obs, stat, est) %>%
+    mutate(est = round(est, digits)) %>%
+    pivot_wider(id_cols = n_obs,
+                names_from = stat,
+                values_from = est) %>%
+    rename(Bias = bias, SE = empse, SEE = modelse, CP = cover)
+}
+row_block_rct <- function(tidy_ss, p_c = 0.8, digits = 3) {
+  cbind(table_block(tidy_ss, list(p_c = p_c, method = "iv"), digits), 
+        table_block(tidy_ss, list(p_c = p_c, method = "pp"), digits)[, -1],
+        table_block(tidy_ss, list(p_c = p_c, method = "itt"), digits)[, -1])
+}
+big_table_rct <- function(tidy_ss, pcs = c(1, 0.8, 0.6), digits = 2) {
+  cbind(data.frame(p_c = rep(pcs, each = NROW(row_block_rct(tidy_ss, pcs[1])))), 
+        do.call(rbind, lapply(pcs, function(p_c) {row_block_rct(tidy_ss, p_c, digits)})))
+}
+```
+
+```{r}
+# use {rsimsum} package to summarize simulation results 
+rct_ss_alpha <- simsum(
+  data = rct_results,
+  estvarname = "alpha_hat",
+  se = "alpha_se",
+  true = "alpha",
+  methodvar = "method",
+  ref = "iv",
+  by = c("n_obs", "p_c"),
+  x = T,
+  dropbig = T,
+  control = list(mcse = T)
+)
+rct_ss_beta_1 <- simsum(
+  data = rct_results,
+  estvarname = "beta_1_hat",
+  se = "beta_1_se",
+  true = "beta_1",
+  methodvar = "method",
+  ref = "iv",
+  by = c("n_obs", "p_c"),
+  x = T,
+  dropbig = T,
+  control = list(mcse = T)
+)
+rct_ss_beta_2 <- simsum(
+  data = rct_results,
+  estvarname = "beta_2_hat",
+  se = "beta_2_se",
+  true = "beta_2",
+  methodvar = "method",
+  ref = "iv",
+  by = c("n_obs", "p_c"),
+  x = T,
+  dropbig = T,
+  control = list(mcse = T)
+)
+```
+
+```{r}
+# generate camera-ready tables using my custom functions and {kableExtra} package
+big_table_rct(tidy(rct_ss_alpha), pcs = c(0.6, 0.8, 1.0), digits = 3) %>%
+  kbl(booktabs = T, caption = "Simulation study on the estimation and inference of alpha in the randomized controlled trial") %>%
+  kable_classic() %>%
+  add_header_above(c(" " = 2, "Instrumental varible" = 4, "Itention-to-treat" = 4, "Per-protocol" = 4)) %>%
+  collapse_rows(columns = 1, valign = "top") %>% 
+  footnote(general = c("SE, empirical standard error of the estimator; 
+                        SEE, empirical average of the standard error estimator; 
+                        CP, empirical coverage rate of the 95% confidence interval. 
+                        Each entry is based on 2,000 replicates."))
+```
+```{r}
+big_table_rct(tidy(rct_ss_beta_1), pcs = c(0.6, 0.8, 1.0), digits = 3) %>%
+  kbl(booktabs = T, caption = "Simulation study on the estimation and inference of beta_1 in the randomized controlled trial") %>%
+  kable_classic() %>%
+  add_header_above(c(" " = 2, "Instrumental varible" = 4, "Itention-to-treat" = 4, "Per-protocol" = 4)) %>%
+  collapse_rows(columns = 1, valign = "top") %>% 
+  footnote(general = c("SE, empirical standard error of the estimator; 
+                        SEE, empirical average of the standard error estimator; 
+                        CP, empirical coverage rate of the 95% confidence interval. 
+                        Each entry is based on 2,000 replicates."))
+```
+```{r}
+big_table_rct(tidy(rct_ss_beta_2), pcs = c(0.6, 0.8, 1.0), digits = 3) %>%
+  kbl(booktabs = T, caption = "Simulation study on the estimation and inference of beta_2 in the randomized controlled trial") %>%
+  kable_classic() %>%
+  add_header_above(c(" " = 2, "Instrumental varible" = 4, "Itention-to-treat" = 4, "Per-protocol" = 4)) %>%
+  collapse_rows(columns = 1, valign = "top") %>% 
+  footnote(general = c("SE, empirical standard error of the estimator; 
+                        SEE, empirical average of the standard error estimator; 
+                        CP, empirical coverage rate of the 95% confidence interval. 
+                        Each entry is based on 2,000 replicates."))
+```
+
+# Generate tables for randomized controlled trials 
+
+```{r}
+# again, some custom function to extract and arrange information
+row_block_obs <- function(tidy_ss, p_c = 0.8, digits = 3) {
+  cbind(
+    table_block(tidy_ss, list(p_c = p_c, method = "iv-correct"), digits),
+    table_block(tidy_ss, list(p_c = p_c, method = "iv-misspecified"), digits)[, -1],
+    table_block(tidy_ss, list(p_c = p_c, method = "iv-marginal"), digits)[, -1],
+    table_block(tidy_ss, list(p_c = p_c, method = "pp"), digits)[, -1]
+  )
+}
+
+big_table_obs <- function(tidy_ss, pcs = c(1, 0.8, 0.6), digits = 3) {
+  cbind(data.frame(p_c = rep(pcs, each = NROW(row_block_obs(tidy_ss, pcs[1])))), 
+        do.call(rbind, lapply(pcs, function(p_c) {row_block_obs(tidy_ss, p_c, digits)})))
+}
+```
+
+```{r}
+# use {rsimsum} package to summarize simulation results 
+obs_ss_alpha <- simsum(
+  data = obs_results,
+  estvarname = "alpha_hat",
+  se = "alpha_se",
+  true = "alpha",
+  methodvar = "method",
+  ref = "iv-correct",
+  by = c("n_obs", "p_c"),
+  x = T,
+  dropbig = T,
+  control = list(mcse = T)
+)
+obs_ss_beta_1 <- simsum(
+  data = obs_results,
+  estvarname = "beta_1_hat",
+  se = "beta_1_se",
+  true = "beta_1",
+  methodvar = "method",
+  ref = "iv-correct",
+  by = c("n_obs", "p_c"),
+  x = T,
+  dropbig = T,
+  control = list(mcse = T)
+)
+obs_ss_beta_2 <- simsum(
+  data = obs_results,
+  estvarname = "beta_2_hat",
+  se = "beta_2_se",
+  true = "beta_2",
+  methodvar = "method",
+  ref = "iv-correct",
+  by = c("n_obs", "p_c"),
+  x = T,
+  dropbig = T,
+  control = list(mcse = T)
+)
+```
+
+```{r}
+big_table_obs(tidy(obs_ss_alpha), pcs = c(0.6, 0.8, 1.0), digits = 3) %>%
+  kbl(booktabs = T, caption = "Simulation study on the estimation and inference of alpha the observational study") %>%
+  kable_classic() %>%
+  add_header_above(c(" " = 2, "IV-correct" = 4, "IV-misspecified" = 4, "IV-marginal" = 4, "Per-protocol" = 4)) %>%
+  collapse_rows(columns = 1, valign = "top") %>% 
+  footnote(general = c("SE, empirical standard error of the estimator; 
+                        SEE, empirical average of the standard error estimator; 
+                        CP, empirical coverage rate of the 95% confidence interval. 
+                        Each entry is based on 2,000 replicates."))
+```
+
+```{r}
+big_table_obs(tidy(obs_ss_beta_1), pcs = c(0.6, 0.8, 1.0), digits = 3) %>%
+  kbl(booktabs = T, caption = "Simulation study on the estimation and inference of beta_1 the observational study") %>%
+  kable_classic() %>%
+  add_header_above(c(" " = 2, "IV-correct" = 4, "IV-misspecified" = 4, "IV-marginal" = 4, "Per-protocol" = 4)) %>%
+  collapse_rows(columns = 1, valign = "top") %>% 
+  footnote(general = c("SE, empirical standard error of the estimator; 
+                        SEE, empirical average of the standard error estimator; 
+                        CP, empirical coverage rate of the 95% confidence interval. 
+                        Each entry is based on 2,000 replicates."))
+```
+
+```{r}
+big_table_obs(tidy(obs_ss_beta_2), pcs = c(0.6, 0.8, 1.0), digits = 3) %>%
+  kbl(booktabs = T, caption = "Simulation study on the estimation and inference of beta_2 the observational study") %>%
+  kable_classic() %>%
+  add_header_above(c(" " = 2, "IV-correct" = 4, "IV-misspecified" = 4, "IV-marginal" = 4, "Per-protocol" = 4)) %>%
+  collapse_rows(columns = 1, valign = "top") %>% 
+  footnote(general = c("SE, empirical standard error of the estimator; 
+                        SEE, empirical average of the standard error estimator; 
+                        CP, empirical coverage rate of the 95% confidence interval. 
+                        Each entry is based on 2,000 replicates."))
+```
+
