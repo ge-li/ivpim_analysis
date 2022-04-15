@@ -73,6 +73,10 @@ rct_ss_alpha <- simsum(
   dropbig = T,
   control = list(mcse = T)
 )
+summary(rct_ss_alpha, stats = "nsim")
+```
+
+```{r}
 rct_ss_beta_1 <- simsum(
   data = rct_results,
   estvarname = "beta_1_hat",
@@ -85,6 +89,10 @@ rct_ss_beta_1 <- simsum(
   dropbig = T,
   control = list(mcse = T)
 )
+summary(rct_ss_beta_1, stats = "nsim")
+```
+
+```{r}
 rct_ss_beta_2 <- simsum(
   data = rct_results,
   estvarname = "beta_2_hat",
@@ -97,6 +105,7 @@ rct_ss_beta_2 <- simsum(
   dropbig = T,
   control = list(mcse = T)
 )
+summary(rct_ss_beta_2, stats = "nsim")
 ```
 
 ```{r}
@@ -134,7 +143,7 @@ big_table_rct(tidy(rct_ss_beta_2), pcs = c(0.6, 0.8, 1.0), digits = 3) %>%
                         Each entry is based on 2,000 replicates."))
 ```
 
-# Generate tables for randomized controlled trials 
+# Generate tables for observational studies
 
 ```{r}
 # again, some custom function to extract and arrange information
@@ -167,6 +176,10 @@ obs_ss_alpha <- simsum(
   dropbig = T,
   control = list(mcse = T)
 )
+summary(obs_ss_alpha, stats = "nsim")
+```
+
+```{r}
 obs_ss_beta_1 <- simsum(
   data = obs_results,
   estvarname = "beta_1_hat",
@@ -179,6 +192,10 @@ obs_ss_beta_1 <- simsum(
   dropbig = T,
   control = list(mcse = T)
 )
+summary(obs_ss_beta_1, stats = "nsim")
+```
+
+```{r}
 obs_ss_beta_2 <- simsum(
   data = obs_results,
   estvarname = "beta_2_hat",
@@ -191,6 +208,7 @@ obs_ss_beta_2 <- simsum(
   dropbig = T,
   control = list(mcse = T)
 )
+summary(obs_ss_beta_2, stats = "nsim")
 ```
 
 ```{r}
