@@ -1,0 +1,363 @@
+[1] "2022-05-05 06:38:11 CDT"
+Begin IVPIM simulation:
+sim_type    n_sim    n_obs      p_c    alpha   beta_1   beta_2    model 
+   "obs"   "2000"    "200"    "0.6"      "1"    "0.5"   "-0.7"  "logit" 
+  |                                                  | 0 % ~calculating    |+                                                 | 1 % ~03m 46s        |+                                                 | 2 % ~03m 42s        |++                                                | 3 % ~03m 42s        |++                                                | 4 % ~03m 41s        |+++                                               | 5 % ~03m 40s        |+++                                               | 6 % ~03m 37s        |++++                                              | 7 % ~03m 35s        |++++                                              | 8 % ~03m 33s        |+++++                                             | 9 % ~03m 31s        |+++++                                             | 10% ~03m 28s        |++++++                                            | 11% ~03m 25s        |++++++                                            | 12% ~03m 23s        |+++++++                                           | 13% ~03m 23s        |+++++++                                           | 14% ~03m 20s        |++++++++                                          | 15% ~03m 18s        |++++++++                                          | 16% ~03m 16s        |+++++++++                                         | 17% ~03m 14s        |+++++++++                                         | 18% ~03m 11s        |++++++++++                                        | 19% ~03m 09s        |++++++++++                                        | 20% ~03m 07s        |+++++++++++                                       | 21% ~03m 05s        |+++++++++++                                       | 22% ~03m 03s        |++++++++++++                                      | 23% ~03m 00s        |++++++++++++                                      | 24% ~02m 58s        |+++++++++++++                                     | 25% ~02m 56s        |+++++++++++++                                     | 26% ~02m 54s        |++++++++++++++                                    | 27% ~02m 51s        |++++++++++++++                                    | 28% ~02m 49s        |+++++++++++++++                                   | 29% ~02m 46s        |+++++++++++++++                                   | 30% ~02m 44s        |++++++++++++++++                                  | 31% ~02m 42s        |++++++++++++++++                                  | 32% ~02m 39s        |+++++++++++++++++                                 | 33% ~02m 37s        |+++++++++++++++++                                 | 34% ~02m 35s        |++++++++++++++++++                                | 35% ~02m 32s        |++++++++++++++++++                                | 36% ~02m 30s        |+++++++++++++++++++                               | 37% ~02m 27s        |+++++++++++++++++++                               | 38% ~02m 25s        |++++++++++++++++++++                              | 39% ~02m 22s        |++++++++++++++++++++                              | 40% ~02m 20s        |+++++++++++++++++++++                             | 41% ~02m 18s        |+++++++++++++++++++++                             | 42% ~02m 15s        |++++++++++++++++++++++                            | 43% ~02m 13s        |++++++++++++++++++++++                            | 44% ~02m 11s        |+++++++++++++++++++++++                           | 45% ~02m 08s        |+++++++++++++++++++++++                           | 46% ~02m 06s        |++++++++++++++++++++++++                          | 47% ~02m 04s        |++++++++++++++++++++++++                          | 48% ~02m 01s        |+++++++++++++++++++++++++                         | 49% ~01m 59s        |+++++++++++++++++++++++++                         | 50% ~01m 57s        |++++++++++++++++++++++++++                        | 51% ~01m 54s        |++++++++++++++++++++++++++                        | 52% ~01m 52s        |+++++++++++++++++++++++++++                       | 53% ~01m 49s        |+++++++++++++++++++++++++++                       | 54% ~01m 47s        |++++++++++++++++++++++++++++                      | 55% ~01m 45s        |++++++++++++++++++++++++++++                      | 56% ~01m 42s        |+++++++++++++++++++++++++++++                     | 57% ~01m 40s        |+++++++++++++++++++++++++++++                     | 58% ~01m 38s        |++++++++++++++++++++++++++++++                    | 59% ~01m 35s        |++++++++++++++++++++++++++++++                    | 60% ~01m 33s        |+++++++++++++++++++++++++++++++                   | 61% ~01m 31s        |+++++++++++++++++++++++++++++++                   | 62% ~01m 28s        |++++++++++++++++++++++++++++++++                  | 63% ~01m 26s        |++++++++++++++++++++++++++++++++                  | 64% ~01m 24s        |+++++++++++++++++++++++++++++++++                 | 65% ~01m 21s        |+++++++++++++++++++++++++++++++++                 | 66% ~01m 19s        |++++++++++++++++++++++++++++++++++                | 67% ~01m 17s        |++++++++++++++++++++++++++++++++++                | 68% ~01m 14s        |+++++++++++++++++++++++++++++++++++               | 69% ~01m 12s        |+++++++++++++++++++++++++++++++++++               | 70% ~01m 10s        |++++++++++++++++++++++++++++++++++++              | 71% ~01m 07s        |++++++++++++++++++++++++++++++++++++              | 72% ~01m 05s        |+++++++++++++++++++++++++++++++++++++             | 73% ~01m 03s        |+++++++++++++++++++++++++++++++++++++             | 74% ~01m 00s        |++++++++++++++++++++++++++++++++++++++            | 75% ~58s            |++++++++++++++++++++++++++++++++++++++            | 76% ~56s            |+++++++++++++++++++++++++++++++++++++++           | 77% ~53s            |+++++++++++++++++++++++++++++++++++++++           | 78% ~51s            |++++++++++++++++++++++++++++++++++++++++          | 79% ~49s            |++++++++++++++++++++++++++++++++++++++++          | 80% ~46s            |+++++++++++++++++++++++++++++++++++++++++         | 81% ~44s            |+++++++++++++++++++++++++++++++++++++++++         | 82% ~42s            |++++++++++++++++++++++++++++++++++++++++++        | 83% ~40s            |++++++++++++++++++++++++++++++++++++++++++        | 84% ~37s            |+++++++++++++++++++++++++++++++++++++++++++       | 85% ~35s            |+++++++++++++++++++++++++++++++++++++++++++       | 86% ~33s            |++++++++++++++++++++++++++++++++++++++++++++      | 87% ~30s            |++++++++++++++++++++++++++++++++++++++++++++      | 88% ~28s            |+++++++++++++++++++++++++++++++++++++++++++++     | 89% ~26s            |+++++++++++++++++++++++++++++++++++++++++++++     | 90% ~23s            |++++++++++++++++++++++++++++++++++++++++++++++    | 91% ~21s            |++++++++++++++++++++++++++++++++++++++++++++++    | 92% ~19s            |+++++++++++++++++++++++++++++++++++++++++++++++   | 93% ~16s            |+++++++++++++++++++++++++++++++++++++++++++++++   | 94% ~14s            |++++++++++++++++++++++++++++++++++++++++++++++++  | 95% ~12s            |++++++++++++++++++++++++++++++++++++++++++++++++  | 96% ~09s            |+++++++++++++++++++++++++++++++++++++++++++++++++ | 97% ~07s            |+++++++++++++++++++++++++++++++++++++++++++++++++ | 98% ~05s            |++++++++++++++++++++++++++++++++++++++++++++++++++| 99% ~02s            |++++++++++++++++++++++++++++++++++++++++++++++++++| 100% elapsed=03m 52s
+Nonconvergent Iteration(s):
+------
+ index
+     5
+    15
+    25
+    45
+    64
+    78
+   105
+   147
+   163
+   187
+   197
+   200
+   204
+   216
+   248
+   262
+   268
+   271
+   273
+   278
+   309
+   338
+   345
+   348
+   406
+   420
+   435
+   444
+   465
+   490
+   493
+   494
+   495
+   504
+   508
+   539
+   547
+   556
+   559
+   611
+   615
+   637
+   644
+   652
+   662
+   664
+   685
+   698
+   703
+   704
+   745
+   746
+   750
+   771
+   781
+   810
+   835
+   842
+   878
+   880
+   889
+   917
+   942
+   947
+   956
+   972
+   974
+   975
+  1011
+  1033
+  1038
+  1043
+  1047
+  1048
+  1050
+  1057
+  1074
+  1086
+  1098
+  1105
+  1124
+  1129
+  1162
+  1164
+  1183
+  1188
+  1214
+  1228
+  1232
+  1283
+  1296
+  1331
+  1333
+  1342
+  1351
+  1381
+  1395
+  1399
+  1400
+  1401
+  1402
+  1410
+  1427
+  1461
+  1472
+  1487
+  1489
+  1516
+  1532
+  1542
+  1546
+  1551
+  1566
+  1571
+  1580
+  1601
+  1615
+  1666
+  1669
+  1680
+  1698
+  1700
+  1725
+  1738
+  1739
+  1754
+  1759
+  1764
+  1785
+  1807
+  1813
+  1824
+  1841
+  1861
+  1866
+  1876
+  1886
+  1899
+  1903
+  1905
+  1911
+  1913
+  1929
+  1937
+  1953
+  1970
+  1980
+                                                                                                          message
+                                                       Jacobian of the PIM estimating function is not invertible.
+                                                       Jacobian of the PIM estimating function is not invertible.
+                                                       Jacobian of the PIM estimating function is not invertible.
+                                                       Jacobian of the PIM estimating function is not invertible.
+                                                       Jacobian of the PIM estimating function is not invertible.
+                                                       Jacobian of the PIM estimating function is not invertible.
+                                                       Jacobian of the PIM estimating function is not invertible.
+                                                       Jacobian of the PIM estimating function is not invertible.
+                                                       Jacobian of the PIM estimating function is not invertible.
+                                                       Jacobian of the PIM estimating function is not invertible.
+                                                       Jacobian of the PIM estimating function is not invertible.
+                                                       Jacobian of the PIM estimating function is not invertible.
+                                                       Jacobian of the PIM estimating function is not invertible.
+                                                       Jacobian of the PIM estimating function is not invertible.
+                                                       Jacobian of the PIM estimating function is not invertible.
+                                                       Jacobian of the PIM estimating function is not invertible.
+                                                       Jacobian of the PIM estimating function is not invertible.
+                                                       Jacobian of the PIM estimating function is not invertible.
+                                                       Jacobian of the PIM estimating function is not invertible.
+                                                       Jacobian of the PIM estimating function is not invertible.
+                                                       Jacobian of the PIM estimating function is not invertible.
+                                                       Jacobian of the PIM estimating function is not invertible.
+                                                       Jacobian of the PIM estimating function is not invertible.
+                                                       Jacobian of the PIM estimating function is not invertible.
+                                                       Jacobian of the PIM estimating function is not invertible.
+                                                       Jacobian of the PIM estimating function is not invertible.
+                                                       Jacobian of the PIM estimating function is not invertible.
+                                                       Jacobian of the PIM estimating function is not invertible.
+                                                       Jacobian of the PIM estimating function is not invertible.
+                                                       Jacobian of the PIM estimating function is not invertible.
+                                                       Jacobian of the PIM estimating function is not invertible.
+                                                       Jacobian of the PIM estimating function is not invertible.
+                                                       Jacobian of the PIM estimating function is not invertible.
+                                                       Jacobian of the PIM estimating function is not invertible.
+                                                       Jacobian of the PIM estimating function is not invertible.
+                                                       Jacobian of the PIM estimating function is not invertible.
+                                                       Jacobian of the PIM estimating function is not invertible.
+                                                       Jacobian of the PIM estimating function is not invertible.
+                                                       Jacobian of the PIM estimating function is not invertible.
+                                                       Jacobian of the PIM estimating function is not invertible.
+                                                       Jacobian of the PIM estimating function is not invertible.
+                                                       Jacobian of the PIM estimating function is not invertible.
+                                                       Jacobian of the PIM estimating function is not invertible.
+                                                       Jacobian of the PIM estimating function is not invertible.
+                                                       Jacobian of the PIM estimating function is not invertible.
+                                                       Jacobian of the PIM estimating function is not invertible.
+                                                       Jacobian of the PIM estimating function is not invertible.
+                                                       Jacobian of the PIM estimating function is not invertible.
+                                                       Jacobian of the PIM estimating function is not invertible.
+                                                       Jacobian of the PIM estimating function is not invertible.
+                                                       Jacobian of the PIM estimating function is not invertible.
+                                                       Jacobian of the PIM estimating function is not invertible.
+                                                       Jacobian of the PIM estimating function is not invertible.
+                                                       Jacobian of the PIM estimating function is not invertible.
+                                                       Jacobian of the PIM estimating function is not invertible.
+                                                       Jacobian of the PIM estimating function is not invertible.
+                                                       Jacobian of the PIM estimating function is not invertible.
+                                                       Jacobian of the PIM estimating function is not invertible.
+                                                       Jacobian of the PIM estimating function is not invertible.
+                                                       Jacobian of the PIM estimating function is not invertible.
+                                                       Jacobian of the PIM estimating function is not invertible.
+                                                       Jacobian of the PIM estimating function is not invertible.
+                                                       Jacobian of the PIM estimating function is not invertible.
+                                                       Jacobian of the PIM estimating function is not invertible.
+                                                       Jacobian of the PIM estimating function is not invertible.
+                                                       Jacobian of the PIM estimating function is not invertible.
+                                                       Jacobian of the PIM estimating function is not invertible.
+                                                       Jacobian of the PIM estimating function is not invertible.
+                                                       Jacobian of the PIM estimating function is not invertible.
+                                                       Jacobian of the PIM estimating function is not invertible.
+                                                       Jacobian of the PIM estimating function is not invertible.
+                                                       Jacobian of the PIM estimating function is not invertible.
+                                                       Jacobian of the PIM estimating function is not invertible.
+                                                       Jacobian of the PIM estimating function is not invertible.
+                                                       Jacobian of the PIM estimating function is not invertible.
+                                                       Jacobian of the PIM estimating function is not invertible.
+                                                       Jacobian of the PIM estimating function is not invertible.
+                                                       Jacobian of the PIM estimating function is not invertible.
+ nleqslv() termination code: 5 - Jacobian is too ill-conditioned (1/condition=1.2e-08) (see allowSingular option)
+                                                       Jacobian of the PIM estimating function is not invertible.
+                                                       Jacobian of the PIM estimating function is not invertible.
+                                                       Jacobian of the PIM estimating function is not invertible.
+                                                       Jacobian of the PIM estimating function is not invertible.
+                                                       Jacobian of the PIM estimating function is not invertible.
+                                                       Jacobian of the PIM estimating function is not invertible.
+                                                       Jacobian of the PIM estimating function is not invertible.
+                                                       Jacobian of the PIM estimating function is not invertible.
+                                                       Jacobian of the PIM estimating function is not invertible.
+                                                       Jacobian of the PIM estimating function is not invertible.
+                                                       Jacobian of the PIM estimating function is not invertible.
+                                                       Jacobian of the PIM estimating function is not invertible.
+                                                       Jacobian of the PIM estimating function is not invertible.
+                                                       Jacobian of the PIM estimating function is not invertible.
+                                                       Jacobian of the PIM estimating function is not invertible.
+                                                       Jacobian of the PIM estimating function is not invertible.
+                                                       Jacobian of the PIM estimating function is not invertible.
+                                                       Jacobian of the PIM estimating function is not invertible.
+                                                       Jacobian of the PIM estimating function is not invertible.
+                                                       Jacobian of the PIM estimating function is not invertible.
+                                                       Jacobian of the PIM estimating function is not invertible.
+                                                       Jacobian of the PIM estimating function is not invertible.
+                                                       Jacobian of the PIM estimating function is not invertible.
+                                                       Jacobian of the PIM estimating function is not invertible.
+                                                       Jacobian of the PIM estimating function is not invertible.
+                                                       Jacobian of the PIM estimating function is not invertible.
+                                                       Jacobian of the PIM estimating function is not invertible.
+                                                       Jacobian of the PIM estimating function is not invertible.
+                                                       Jacobian of the PIM estimating function is not invertible.
+                                                       Jacobian of the PIM estimating function is not invertible.
+                                                       Jacobian of the PIM estimating function is not invertible.
+                                                       Jacobian of the PIM estimating function is not invertible.
+                                                       Jacobian of the PIM estimating function is not invertible.
+                                                       Jacobian of the PIM estimating function is not invertible.
+                                                       Jacobian of the PIM estimating function is not invertible.
+                                                       Jacobian of the PIM estimating function is not invertible.
+                                                       Jacobian of the PIM estimating function is not invertible.
+                                                       Jacobian of the PIM estimating function is not invertible.
+                                                       Jacobian of the PIM estimating function is not invertible.
+                                                       Jacobian of the PIM estimating function is not invertible.
+                                                       Jacobian of the PIM estimating function is not invertible.
+                                                       Jacobian of the PIM estimating function is not invertible.
+                                                       Jacobian of the PIM estimating function is not invertible.
+                                                       Jacobian of the PIM estimating function is not invertible.
+                                                       Jacobian of the PIM estimating function is not invertible.
+                                                       Jacobian of the PIM estimating function is not invertible.
+                                                       Jacobian of the PIM estimating function is not invertible.
+                                                       Jacobian of the PIM estimating function is not invertible.
+                                                       Jacobian of the PIM estimating function is not invertible.
+                                                       Jacobian of the PIM estimating function is not invertible.
+                                                       Jacobian of the PIM estimating function is not invertible.
+                                                       Jacobian of the PIM estimating function is not invertible.
+                                                       Jacobian of the PIM estimating function is not invertible.
+                                                       Jacobian of the PIM estimating function is not invertible.
+                                                       Jacobian of the PIM estimating function is not invertible.
+                                                       Jacobian of the PIM estimating function is not invertible.
+                                                       Jacobian of the PIM estimating function is not invertible.
+                                                       Jacobian of the PIM estimating function is not invertible.
+                                                       Jacobian of the PIM estimating function is not invertible.
+                                                       Jacobian of the PIM estimating function is not invertible.
+                                                       Jacobian of the PIM estimating function is not invertible.
+                                                       Jacobian of the PIM estimating function is not invertible.
+                                                       Jacobian of the PIM estimating function is not invertible.
+                                                       Jacobian of the PIM estimating function is not invertible.
+                                                       Jacobian of the PIM estimating function is not invertible.
+                                                       Jacobian of the PIM estimating function is not invertible.
+                                                       Jacobian of the PIM estimating function is not invertible.
+                                                       Jacobian of the PIM estimating function is not invertible.
+Note:  147/2000 (7.35%) iterations failed to converge.
+------
+[1] "2022-05-05 06:42:03 CDT"
+Begin IVPIM simulation:
+sim_type    n_sim    n_obs      p_c    alpha   beta_1   beta_2    model 
+   "obs"   "2000"    "400"    "0.6"      "1"    "0.5"   "-0.7"  "logit" 
+  |                                                  | 0 % ~calculating    |+                                                 | 1 % ~15m 08s        |+                                                 | 2 % ~14m 50s        |++                                                | 3 % ~14m 53s        |++                                                | 4 % ~14m 45s        |+++                                               | 5 % ~14m 34s        |+++                                               | 6 % ~14m 28s        |++++                                              | 7 % ~14m 21s        |++++                                              | 8 % ~14m 11s        |+++++                                             | 9 % ~14m 01s        |+++++                                             | 10% ~13m 53s        |++++++                                            | 11% ~13m 45s        |++++++                                            | 12% ~13m 36s        |+++++++                                           | 13% ~13m 26s        |+++++++                                           | 14% ~13m 17s        |++++++++                                          | 15% ~13m 08s        |++++++++                                          | 16% ~12m 60s        |+++++++++                                         | 17% ~12m 50s        |+++++++++                                         | 18% ~12m 41s        |++++++++++                                        | 19% ~12m 32s        |++++++++++                                        | 20% ~12m 23s        |+++++++++++                                       | 21% ~12m 13s        |+++++++++++                                       | 22% ~12m 03s        |++++++++++++                                      | 23% ~11m 53s        |++++++++++++                                      | 24% ~11m 44s        |+++++++++++++                                     | 25% ~11m 34s        |+++++++++++++                                     | 26% ~11m 24s        |++++++++++++++                                    | 27% ~11m 15s        |++++++++++++++                                    | 28% ~11m 06s        |+++++++++++++++                                   | 29% ~10m 56s        |+++++++++++++++                                   | 30% ~10m 48s        |++++++++++++++++                                  | 31% ~10m 38s        |++++++++++++++++                                  | 32% ~10m 29s        |+++++++++++++++++                                 | 33% ~10m 20s        |+++++++++++++++++                                 | 34% ~10m 11s        |++++++++++++++++++                                | 35% ~10m 02s        |++++++++++++++++++                                | 36% ~09m 52s        |+++++++++++++++++++                               | 37% ~09m 42s        |+++++++++++++++++++                               | 38% ~09m 33s        |++++++++++++++++++++                              | 39% ~09m 24s        |++++++++++++++++++++                              | 40% ~09m 16s        |+++++++++++++++++++++                             | 41% ~09m 06s        |+++++++++++++++++++++                             | 42% ~08m 57s        |++++++++++++++++++++++                            | 43% ~08m 48s        |++++++++++++++++++++++                            | 44% ~08m 40s        |+++++++++++++++++++++++                           | 45% ~08m 31s        |+++++++++++++++++++++++                           | 46% ~08m 21s        |++++++++++++++++++++++++                          | 47% ~08m 12s        |++++++++++++++++++++++++                          | 48% ~08m 03s        |+++++++++++++++++++++++++                         | 49% ~07m 54s        |+++++++++++++++++++++++++                         | 50% ~07m 44s        |++++++++++++++++++++++++++                        | 51% ~07m 35s        |++++++++++++++++++++++++++                        | 52% ~07m 26s        |+++++++++++++++++++++++++++                       | 53% ~07m 17s        |+++++++++++++++++++++++++++                       | 54% ~07m 08s        |++++++++++++++++++++++++++++                      | 55% ~06m 59s        |++++++++++++++++++++++++++++                      | 56% ~06m 49s        |+++++++++++++++++++++++++++++                     | 57% ~06m 40s        |+++++++++++++++++++++++++++++                     | 58% ~06m 31s        |++++++++++++++++++++++++++++++                    | 59% ~06m 22s        |++++++++++++++++++++++++++++++                    | 60% ~06m 12s        |+++++++++++++++++++++++++++++++                   | 61% ~06m 03s        |+++++++++++++++++++++++++++++++                   | 62% ~05m 54s        |++++++++++++++++++++++++++++++++                  | 63% ~05m 44s        |++++++++++++++++++++++++++++++++                  | 64% ~05m 35s        |+++++++++++++++++++++++++++++++++                 | 65% ~05m 26s        |+++++++++++++++++++++++++++++++++                 | 66% ~05m 16s        |++++++++++++++++++++++++++++++++++                | 67% ~05m 07s        |++++++++++++++++++++++++++++++++++                | 68% ~04m 58s        |+++++++++++++++++++++++++++++++++++               | 69% ~04m 48s        |+++++++++++++++++++++++++++++++++++               | 70% ~04m 39s        |++++++++++++++++++++++++++++++++++++              | 71% ~04m 30s        |++++++++++++++++++++++++++++++++++++              | 72% ~04m 21s        |+++++++++++++++++++++++++++++++++++++             | 73% ~04m 11s        |+++++++++++++++++++++++++++++++++++++             | 74% ~04m 02s        |++++++++++++++++++++++++++++++++++++++            | 75% ~03m 53s        |++++++++++++++++++++++++++++++++++++++            | 76% ~03m 43s        |+++++++++++++++++++++++++++++++++++++++           | 77% ~03m 34s        |+++++++++++++++++++++++++++++++++++++++           | 78% ~03m 25s        |++++++++++++++++++++++++++++++++++++++++          | 79% ~03m 15s        |++++++++++++++++++++++++++++++++++++++++          | 80% ~03m 06s        |+++++++++++++++++++++++++++++++++++++++++         | 81% ~02m 57s        |+++++++++++++++++++++++++++++++++++++++++         | 82% ~02m 47s        |++++++++++++++++++++++++++++++++++++++++++        | 83% ~02m 38s        |++++++++++++++++++++++++++++++++++++++++++        | 84% ~02m 29s        |+++++++++++++++++++++++++++++++++++++++++++       | 85% ~02m 20s        |+++++++++++++++++++++++++++++++++++++++++++       | 86% ~02m 10s        |++++++++++++++++++++++++++++++++++++++++++++      | 87% ~02m 01s        |++++++++++++++++++++++++++++++++++++++++++++      | 88% ~01m 52s        |+++++++++++++++++++++++++++++++++++++++++++++     | 89% ~01m 42s        |+++++++++++++++++++++++++++++++++++++++++++++     | 90% ~01m 33s        |++++++++++++++++++++++++++++++++++++++++++++++    | 91% ~01m 24s        |++++++++++++++++++++++++++++++++++++++++++++++    | 92% ~01m 15s        |+++++++++++++++++++++++++++++++++++++++++++++++   | 93% ~01m 05s        |+++++++++++++++++++++++++++++++++++++++++++++++   | 94% ~56s            |++++++++++++++++++++++++++++++++++++++++++++++++  | 95% ~47s            |++++++++++++++++++++++++++++++++++++++++++++++++  | 96% ~37s            |+++++++++++++++++++++++++++++++++++++++++++++++++ | 97% ~28s            |+++++++++++++++++++++++++++++++++++++++++++++++++ | 98% ~19s            |++++++++++++++++++++++++++++++++++++++++++++++++++| 99% ~09s            |++++++++++++++++++++++++++++++++++++++++++++++++++| 100% elapsed=15m 32s
+Nonconvergent Iteration(s):
+------
+ index                                                    message
+   297 Jacobian of the PIM estimating function is not invertible.
+   324 Jacobian of the PIM estimating function is not invertible.
+   346 Jacobian of the PIM estimating function is not invertible.
+   456 Jacobian of the PIM estimating function is not invertible.
+   670 Jacobian of the PIM estimating function is not invertible.
+   673 Jacobian of the PIM estimating function is not invertible.
+   692 Jacobian of the PIM estimating function is not invertible.
+   705 Jacobian of the PIM estimating function is not invertible.
+   790 Jacobian of the PIM estimating function is not invertible.
+   903 Jacobian of the PIM estimating function is not invertible.
+   937 Jacobian of the PIM estimating function is not invertible.
+   986 Jacobian of the PIM estimating function is not invertible.
+  1037 Jacobian of the PIM estimating function is not invertible.
+  1050 Jacobian of the PIM estimating function is not invertible.
+  1223 Jacobian of the PIM estimating function is not invertible.
+  1341 Jacobian of the PIM estimating function is not invertible.
+  1343 Jacobian of the PIM estimating function is not invertible.
+  1396 Jacobian of the PIM estimating function is not invertible.
+  1539 Jacobian of the PIM estimating function is not invertible.
+  1560 Jacobian of the PIM estimating function is not invertible.
+  1651 Jacobian of the PIM estimating function is not invertible.
+  1695 Jacobian of the PIM estimating function is not invertible.
+  1779 Jacobian of the PIM estimating function is not invertible.
+  1885 Jacobian of the PIM estimating function is not invertible.
+  1899 Jacobian of the PIM estimating function is not invertible.
+  1971 Jacobian of the PIM estimating function is not invertible.
+  1983 Jacobian of the PIM estimating function is not invertible.
+Note:  27/2000 (1.35%) iterations failed to converge.
+------
+[1] "2022-05-05 06:57:36 CDT"
+Begin IVPIM simulation:
+sim_type    n_sim    n_obs      p_c    alpha   beta_1   beta_2    model 
+   "obs"   "2000"    "800"    "0.6"      "1"    "0.5"   "-0.7"  "logit" 
+  |                                                  | 0 % ~calculating    |+                                                 | 1 % ~01h 02m 59s    |+                                                 | 2 % ~01h 02m 33s    |++                                                | 3 % ~01h 02m 09s    |++                                                | 4 % ~01h 01m 35s    |+++                                               | 5 % ~01h 00m 56s    |+++                                               | 6 % ~01h 00m 13s    |++++                                              | 7 % ~59m 33s        |++++                                              | 8 % ~58m 43s        |+++++                                             | 9 % ~57m 59s        |+++++                                             | 10% ~57m 28s        |++++++                                            | 11% ~56m 58s        |++++++                                            | 12% ~56m 20s        |+++++++                                           | 13% ~55m 43s        |+++++++                                           | 14% ~55m 04s        |++++++++                                          | 15% ~54m 29s        |++++++++                                          | 16% ~53m 52s        |+++++++++                                         | 17% ~53m 17s        |+++++++++                                         | 18% ~52m 37s        |++++++++++                                        | 19% ~51m 58s        |++++++++++                                        | 20% ~51m 18s        |+++++++++++                                       | 21% ~50m 38s        |+++++++++++                                       | 22% ~49m 59s        |++++++++++++                                      | 23% ~49m 23s        |++++++++++++                                      | 24% ~48m 45s        |+++++++++++++                                     | 25% ~48m 08s        |+++++++++++++                                     | 26% ~47m 30s        |++++++++++++++                                    | 27% ~46m 53s        |++++++++++++++                                    | 28% ~46m 15s        |+++++++++++++++                                   | 29% ~45m 36s        |+++++++++++++++                                   | 30% ~44m 57s        |++++++++++++++++                                  | 31% ~44m 18s        |++++++++++++++++                                  | 32% ~43m 40s        |+++++++++++++++++                                 | 33% ~43m 02s        |+++++++++++++++++                                 | 34% ~42m 23s        |++++++++++++++++++                                | 35% ~41m 44s        |++++++++++++++++++                                | 36% ~41m 06s        |+++++++++++++++++++                               | 37% ~40m 29s        |+++++++++++++++++++                               | 38% ~39m 50s        |++++++++++++++++++++                              | 39% ~39m 11s        |++++++++++++++++++++                              | 40% ~38m 33s        |+++++++++++++++++++++                             | 41% ~37m 55s        |+++++++++++++++++++++                             | 42% ~37m 15s        |++++++++++++++++++++++                            | 43% ~36m 36s        |++++++++++++++++++++++                            | 44% ~35m 58s        |+++++++++++++++++++++++                           | 45% ~35m 19s        |+++++++++++++++++++++++                           | 46% ~34m 41s        |++++++++++++++++++++++++                          | 47% ~34m 04s        |++++++++++++++++++++++++                          | 48% ~33m 25s        |+++++++++++++++++++++++++                         | 49% ~32m 47s        |+++++++++++++++++++++++++                         | 50% ~32m 08s        |++++++++++++++++++++++++++                        | 51% ~31m 29s        |++++++++++++++++++++++++++                        | 52% ~30m 51s        |+++++++++++++++++++++++++++                       | 53% ~30m 13s        |+++++++++++++++++++++++++++                       | 54% ~29m 34s        |++++++++++++++++++++++++++++                      | 55% ~28m 56s        |++++++++++++++++++++++++++++                      | 56% ~28m 17s        |+++++++++++++++++++++++++++++                     | 57% ~27m 39s        |+++++++++++++++++++++++++++++                     | 58% ~27m 00s        |++++++++++++++++++++++++++++++                    | 59% ~26m 22s        |++++++++++++++++++++++++++++++                    | 60% ~25m 44s        |+++++++++++++++++++++++++++++++                   | 61% ~25m 05s        |+++++++++++++++++++++++++++++++                   | 62% ~24m 27s        |++++++++++++++++++++++++++++++++                  | 63% ~23m 48s        |++++++++++++++++++++++++++++++++                  | 64% ~23m 10s        |+++++++++++++++++++++++++++++++++                 | 65% ~22m 31s        |+++++++++++++++++++++++++++++++++                 | 66% ~21m 53s        |++++++++++++++++++++++++++++++++++                | 67% ~21m 14s        |++++++++++++++++++++++++++++++++++                | 68% ~20m 35s        |+++++++++++++++++++++++++++++++++++               | 69% ~19m 57s        |+++++++++++++++++++++++++++++++++++               | 70% ~19m 18s        |++++++++++++++++++++++++++++++++++++              | 71% ~18m 40s        |++++++++++++++++++++++++++++++++++++              | 72% ~18m 01s        |+++++++++++++++++++++++++++++++++++++             | 73% ~17m 23s        |+++++++++++++++++++++++++++++++++++++             | 74% ~16m 44s        |++++++++++++++++++++++++++++++++++++++            | 75% ~16m 06s        |++++++++++++++++++++++++++++++++++++++            | 76% ~15m 27s        |+++++++++++++++++++++++++++++++++++++++           | 77% ~14m 49s        |+++++++++++++++++++++++++++++++++++++++           | 78% ~14m 10s        |++++++++++++++++++++++++++++++++++++++++          | 79% ~13m 31s        |++++++++++++++++++++++++++++++++++++++++          | 80% ~12m 53s        |+++++++++++++++++++++++++++++++++++++++++         | 81% ~12m 14s        |+++++++++++++++++++++++++++++++++++++++++         | 82% ~11m 36s        |++++++++++++++++++++++++++++++++++++++++++        | 83% ~10m 57s        |++++++++++++++++++++++++++++++++++++++++++        | 84% ~10m 18s        |+++++++++++++++++++++++++++++++++++++++++++       | 85% ~09m 40s        |+++++++++++++++++++++++++++++++++++++++++++       | 86% ~09m 01s        |++++++++++++++++++++++++++++++++++++++++++++      | 87% ~08m 23s        |++++++++++++++++++++++++++++++++++++++++++++      | 88% ~07m 44s        |+++++++++++++++++++++++++++++++++++++++++++++     | 89% ~07m 05s        |+++++++++++++++++++++++++++++++++++++++++++++     | 90% ~06m 27s        |++++++++++++++++++++++++++++++++++++++++++++++    | 91% ~05m 48s        |++++++++++++++++++++++++++++++++++++++++++++++    | 92% ~05m 09s        |+++++++++++++++++++++++++++++++++++++++++++++++   | 93% ~04m 31s        |+++++++++++++++++++++++++++++++++++++++++++++++   | 94% ~03m 52s        |++++++++++++++++++++++++++++++++++++++++++++++++  | 95% ~03m 13s        |++++++++++++++++++++++++++++++++++++++++++++++++  | 96% ~02m 35s        |+++++++++++++++++++++++++++++++++++++++++++++++++ | 97% ~01m 56s        |+++++++++++++++++++++++++++++++++++++++++++++++++ | 98% ~01m 17s        |++++++++++++++++++++++++++++++++++++++++++++++++++| 99% ~39s            |++++++++++++++++++++++++++++++++++++++++++++++++++| 100% elapsed=01h 04m 27s
+Nonconvergent Iteration(s):
+------
+ index                                                    message
+  1201 Jacobian of the PIM estimating function is not invertible.
+Note:  1/2000 (0.05%) iterations failed to converge.
+------
+[1] "2022-05-05 08:02:02 CDT"
+Begin IVPIM simulation:
+sim_type    n_sim    n_obs      p_c    alpha   beta_1   beta_2    model 
+   "obs"   "2000"   "1600"    "0.6"      "1"    "0.5"   "-0.7"  "logit" 
+  |                                                  | 0 % ~calculating    |+                                                 | 1 % ~04h 08m 14s    |+                                                 | 2 % ~04h 04m 56s    |++                                                | 3 % ~04h 02m 08s    |++                                                | 4 % ~03h 59m 35s    |+++                                               | 5 % ~03h 57m 16s    |+++                                               | 6 % ~03h 54m 50s    |++++                                              | 7 % ~03h 52m 22s    |++++                                              | 8 % ~03h 49m 52s    |+++++                                             | 9 % ~03h 47m 28s    |+++++                                             | 10% ~03h 44m 55s    |++++++                                            | 11% ~03h 42m 16s    |++++++                                            | 12% ~03h 39m 40s    |+++++++                                           | 13% ~03h 37m 08s    |+++++++                                           | 14% ~03h 34m 43s    |++++++++                                          | 15% ~03h 32m 16s    |++++++++                                          | 16% ~03h 29m 44s    |+++++++++                                         | 17% ~03h 27m 16s    |+++++++++                                         | 18% ~03h 24m 50s    |++++++++++                                        | 19% ~03h 22m 18s    |++++++++++                                        | 20% ~03h 19m 45s    |+++++++++++                                       | 21% ~03h 17m 17s    |+++++++++++                                       | 22% ~03h 14m 52s    |++++++++++++                                      | 23% ~03h 12m 21s    |++++++++++++                                      | 24% ~03h 09m 49s    |+++++++++++++                                     | 25% ~03h 07m 17s    |+++++++++++++                                     | 26% ~03h 04m 47s    |++++++++++++++                                    | 27% ~03h 02m 21s    |++++++++++++++                                    | 28% ~02h 59m 51s    |+++++++++++++++                                   | 29% ~02h 57m 20s    |+++++++++++++++                                   | 30% ~02h 54m 50s    |++++++++++++++++                                  | 31% ~02h 52m 19s    |++++++++++++++++                                  | 32% ~02h 49m 37s    |+++++++++++++++++                                 | 33% ~02h 46m 58s    |+++++++++++++++++                                 | 34% ~02h 44m 20s    |++++++++++++++++++                                | 35% ~02h 41m 43s    |++++++++++++++++++                                | 36% ~02h 39m 06s    |+++++++++++++++++++                               | 37% ~02h 36m 27s    |+++++++++++++++++++                               | 38% ~02h 33m 46s    |++++++++++++++++++++                              | 39% ~02h 31m 05s    |++++++++++++++++++++                              | 40% ~02h 28m 27s    |+++++++++++++++++++++                             | 41% ~02h 25m 49s    |+++++++++++++++++++++                             | 42% ~02h 23m 13s    |++++++++++++++++++++++                            | 43% ~02h 20m 37s    |++++++++++++++++++++++                            | 44% ~02h 17m 59s    |+++++++++++++++++++++++                           | 45% ~02h 15m 24s    |+++++++++++++++++++++++                           | 46% ~02h 12m 43s    |++++++++++++++++++++++++                          | 47% ~02h 10m 05s    |++++++++++++++++++++++++                          | 48% ~02h 07m 27s    |+++++++++++++++++++++++++                         | 49% ~02h 04m 50s    |+++++++++++++++++++++++++                         | 50% ~02h 02m 14s    |++++++++++++++++++++++++++                        | 51% ~01h 59m 39s    |++++++++++++++++++++++++++                        | 52% ~01h 57m 05s    |+++++++++++++++++++++++++++                       | 53% ~01h 54m 30s    |+++++++++++++++++++++++++++                       | 54% ~01h 51m 55s    |++++++++++++++++++++++++++++                      | 55% ~01h 49m 23s    |++++++++++++++++++++++++++++                      | 56% ~01h 46m 51s    |+++++++++++++++++++++++++++++                     | 57% ~01h 44m 19s    |+++++++++++++++++++++++++++++                     | 58% ~01h 41m 48s    |++++++++++++++++++++++++++++++                    | 59% ~01h 39m 17s    |++++++++++++++++++++++++++++++                    | 60% ~01h 36m 46s    |+++++++++++++++++++++++++++++++                   | 61% ~01h 34m 16s    |+++++++++++++++++++++++++++++++                   | 62% ~01h 31m 47s    |++++++++++++++++++++++++++++++++                  | 63% ~01h 29m 17s    |++++++++++++++++++++++++++++++++                  | 64% ~01h 26m 49s    |+++++++++++++++++++++++++++++++++                 | 65% ~01h 24m 20s    |+++++++++++++++++++++++++++++++++                 | 66% ~01h 21m 52s    |++++++++++++++++++++++++++++++++++                | 67% ~01h 19m 23s    |++++++++++++++++++++++++++++++++++                | 68% ~01h 16m 56s    |+++++++++++++++++++++++++++++++++++               | 69% ~01h 14m 29s    |+++++++++++++++++++++++++++++++++++               | 70% ~01h 12m 02s    |++++++++++++++++++++++++++++++++++++              | 71% ~01h 09m 35s    |++++++++++++++++++++++++++++++++++++              | 72% ~01h 07m 08s    |+++++++++++++++++++++++++++++++++++++             | 73% ~01h 04m 42s    |+++++++++++++++++++++++++++++++++++++             | 74% ~01h 02m 16s    |++++++++++++++++++++++++++++++++++++++            | 75% ~59m 50s        |++++++++++++++++++++++++++++++++++++++            | 76% ~57m 25s        |+++++++++++++++++++++++++++++++++++++++           | 77% ~54m 60s        |+++++++++++++++++++++++++++++++++++++++           | 78% ~52m 35s        |++++++++++++++++++++++++++++++++++++++++          | 79% ~50m 10s        |++++++++++++++++++++++++++++++++++++++++          | 80% ~47m 45s        |+++++++++++++++++++++++++++++++++++++++++         | 81% ~45m 20s        |+++++++++++++++++++++++++++++++++++++++++         | 82% ~42m 56s        |++++++++++++++++++++++++++++++++++++++++++        | 83% ~40m 31s        |++++++++++++++++++++++++++++++++++++++++++        | 84% ~38m 07s        |+++++++++++++++++++++++++++++++++++++++++++       | 85% ~35m 43s        |+++++++++++++++++++++++++++++++++++++++++++       | 86% ~33m 20s        |++++++++++++++++++++++++++++++++++++++++++++      | 87% ~30m 56s        |++++++++++++++++++++++++++++++++++++++++++++      | 88% ~28m 32s        |+++++++++++++++++++++++++++++++++++++++++++++     | 89% ~26m 09s        |+++++++++++++++++++++++++++++++++++++++++++++     | 90% ~23m 46s        |++++++++++++++++++++++++++++++++++++++++++++++    | 91% ~21m 23s        |++++++++++++++++++++++++++++++++++++++++++++++    | 92% ~19m 00s        |+++++++++++++++++++++++++++++++++++++++++++++++   | 93% ~16m 37s        |+++++++++++++++++++++++++++++++++++++++++++++++   | 94% ~14m 14s        |++++++++++++++++++++++++++++++++++++++++++++++++  | 95% ~11m 52s        |++++++++++++++++++++++++++++++++++++++++++++++++  | 96% ~09m 29s        |+++++++++++++++++++++++++++++++++++++++++++++++++ | 97% ~07m 07s        |+++++++++++++++++++++++++++++++++++++++++++++++++ | 98% ~04m 44s        |++++++++++++++++++++++++++++++++++++++++++++++++++| 99% ~02m 22s        |++++++++++++++++++++++++++++++++++++++++++++++++++| 100% elapsed=03h 56m 53s
+Nonconvergent Iteration(s):
+------
+NULL
+Note:  0/2000 (0%) iterations failed to converge.
+------

@@ -1,0 +1,434 @@
+---
+title: "Instrumental variable estimation in the complier probabilistic index model"
+author: Li Ge, Lu Mao. 
+date: "`r Sys.Date()`"
+output: 
+  github_document:
+    toc: true
+    toc_depth: 5
+always_allow_html: true
+---
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+**Note**:
+
+* This `README.md` is generated from `README.Rmd`. Some of the source code is hidden in README.md for brevity. The reader can find all the code and details in `README.rmd`. 
+* The tables and figures produced in this document might be **only aesthetically different** (e.g. style, color, font) from the ones that appear in the poster or manuscript.
+* We intentionally separated the analysis and implementation of the instrumental variable probabilistic index models (IVPIM) into different repositories. This repository contains scripts for conducting the simulation, output files, log files, analysis, and summary results.
+* [{complyr}](https://github.com/ge-li/complyr) implements the IVPIM method and has some generic data generating processes for studying non-compliance problems. 
+* [{upim}](https://github.com/ge-li/upim) implements the U-statistics probabilistic index model.
+
+
+## 2022 American Causal Inference Conference Abstract
+<!-- badges: start -->
+<!-- badges: end -->
+**Title**: Instrumental variable estimation in the complier probabilistic index model
+
+**Authors**: Li Ge, Lu Mao
+
+**Affiliation**: Department of Biostatistics and Medical Informatics, University of Wisconsin-Madison
+
+**Abstract**: Unignorable confounding is no stranger even for randomized controlled trials (RCTs) in the presence of treatment non-compliance. One fallback is the intention-to-treat (ITT) analysis, which unfortunately only reflects the assignment-induced causal effect. The celebrated (Angrist, Imbens & Rubin 1996) framework provides an excellent platform to tackle this problem. 
+
+However, the local average treatment effect (LATE) is neither robust to outliers nor suitable for categorical outcomes with vaguely defined scales. The estimand targeted by the Mann-Whitney test is more applicable in such scenarios. It measures the probability that the outcome of a randomly selected treated subject is no worse than that in control, which depends only on the rank of the outcome. (Thas et al. 2012) introduced the probabilistic index model (PIM) to estimate the covariate-adjusted conditional Mann-Whitney treatment effect. The estimator arises naturally in a U-statistics form. (Mao 2018) derived the semiparametric efficiency bounds for estimators of such type when there is no unmeasured confounder. But estimating PIM with unignorable confounding has not been adequately studied. 
+
+We propose the instrumental variable estimation in the complier PIM by a generalized (Abadie 2003) weighting scheme to fill this gap. The identification assumptions remain the same. We only impose a flexible modeling assumption on compliers. The U-statistics M-estimator we construct is asymptotically linear. We develop a user-friendly R package for the method. Extensive simulation studies show the superiority of our methods compared to ITT and per-protocol analysis under non-compliance. When ethical or practical concerns prevent randomized trials, our approach is still valid if the propensity score is properly estimated. This work expands the toolbox for analyzing RCTs with non-compliance or observational studies and is especially useful when outliers or ordinal outcomes make ATE an inappropriate evaluation metric.
+
+
+## Simulation Analysis
+
+<!-- badges: start -->
+<!-- badges: end -->
+
+### Reproducibility 
+
+The simulation commands can be found in `sim_commands.txt`. The simulation functions are implemented in `sim.R`. The command-line script for running the simulation is `sim_script.R`. The output csv files are in the `./out/` sub-directory, and the log files are in the `./log/` sub-directory.
+
+The output csv files are essentially data frames, where each row contains the point estimates of the complier model coefficients and their standard errors for each method in different combinations of sample sizes and compliance rates. 
+
+The log file stores when the simulation starts and finishes, along with the progress bar. After the progress bar for each simulation, the indexes of non-convergent iterations and error messages are attached.
+
+```{r, include = F}
+library(tidyverse)
+library(rsimsum)
+library(kableExtra)
+library(patchwork)
+```
+
+### Convergence
+
+```{r}
+# get list of files
+rct_files <- list.files("./out", pattern = "sim_type.rct", full.names = TRUE)
+obs_files <- list.files("./out", pattern = "sim_type.obs", full.names = TRUE)
+
+# read output files
+rct_results <- do.call(rbind, lapply(rct_files, read.csv)) %>% tibble()
+obs_results <- do.call(rbind, lapply(obs_files, read.csv)) %>% tibble()
+
+# factorize method column
+rct_results$method <- factor(rct_results$method, levels = c("iv", "itt", "pp"))
+obs_results$method <- factor(obs_results$method,
+                             levels = c("iv-correct", "iv-misspecified",
+                                        "iv-marginal", "pp"))
+```
+
+The following code extract the number of convergent cases for each setting. We can see that in the RCT simulation, the setting with $n_{obs} = 200, p_c = 0.6$ dropped 10 non-convergent iterations. Similarly when neither the sample size or the compliance rate is high enough, there are some non-convergent iterations in the observation study setting. 
+
+```{r}
+rct_n_conv <- rct_results %>%
+  group_by(n_obs, p_c) %>%
+  summarise(n_conv = n() / 3, .groups = "drop") # three methods per iteration
+obs_n_conv <- obs_results %>%
+  group_by(n_obs, p_c) %>%
+  summarise(n_conv = n() / 4, .groups = "drop") # four methods per iteration
+xtabs(n_conv ~ n_obs + p_c, rct_n_conv)
+xtabs(n_conv ~ n_obs + p_c, obs_n_conv)
+```
+
+#### Convergence Criteria
+
+For each combination of $n_{obs}$ and $p_c$, we repeatedly generate $n_{sim} = 2000$ data. For all methods we are trying to compare, the imaginary analyst would only have access to $Z, A, X, Y$.
+
+Each method is some version of PIM, when solving the estimating equations, we use the same Newton's method setting:
+
+1. We use a pure Newton's method with 100 maximum iterations. We don't use global strategies (e.g., line search or trust-region methods) in this simulation. But the users will have the option to both print iteration reports and test different global strategies in `upim::pim_fit()` and `complyr::ivpim()`.
+2. The default initial guess is `jitter(rep(0, p))`, where p is the number of covariates in PIM. The `jitter()` function is to avoid using all zeros as an initial guess and accidentally set estimating function to be within function value tolerance. 
+
+We use the same convergence criteria:
+
+1. We use the L-infinity norm to check whether a root for estimating equation is found. The tolerance is set to be `sqrt(.Machine$double.eps) = 1.49e-8`. This is also the default tolerance for `all.equal()` function in R. 
+2. We check whether the Jacobian is invertible using the same tolerance. 
+3. We check the `nleqslv::nleqslv()` termination code for other non-convergent cases such as exceeding the maximum iteration. 
+
+To make the results comparable, we would only accept iterations where all methods converged. For example, in the RCT simulation, per-protocol PIM will only use a subset of per-protocol data and IV-PIM will have negative weights that affect the geometry of estimating function. In the observational study simulation, sometimes the method that uses correct propensity score estimation will converge but the one that uses a misspecified or marginal propensity score model will fail to converge. We only keep iteration that all methods declare convergence. 
+
+The log files show that almost all non-convergent cases are directly due to the singular Jacobian matrix of the estimating function. However, the root causes are generally due to:
+
+1. The estimating function has no "zeros" within function tolerance (1.49e-8). This is usually due to the presence of a high non-compliance rate in small sample sizes, which makes the estimating function irregular. IV methods are not "silver bullets" for data quality problems in practice.
+2. The initial guess of Newton's method is not ideal, with multiple covariates, we are essentially trying to solve a system of nonlinear equations. One of the conditions for Newton's method to converge is that the initial guess is "close enough" to the true roots. Here is an example. 
+
+```{r}
+# 1. Generate RCT data
+set.seed(42)
+df <- complyr::dgp_rct(n = 200, p_c = 0.6, alpha = 1, beta_1 = 0.5, error_dist = "gumbel")
+# 2. Fit an IV-PIM model
+ps_model <- glm(df$z ~ 1, family = binomial(link = "logit"), x = TRUE)
+good_init <- complyr::ivpim(y = df$y, z = df$z, a = df$a, X = df[, c("x1")],
+                            ps_model =  ps_model, link = "logit",
+                            init = c(0, 0), trace = T)
+good_init$coef
+```
+
+However, if we use different initial guesses, we might not be able to achieve convergence, as illustrated by the following figure. 
+
+```{r, cache = TRUE, echo = F}
+set.seed(42)
+n_guesses <- 1e3
+inits <- matrix(runif(n_guesses * 2, min = -3, max = 3), n_guesses)
+idxcvg <- numeric(0)
+for (i in 1:n_guesses) {
+  obj <- NULL
+  obj <- try({
+    ps_model <- glm(df$z ~ 1, family = binomial(link = "logit"), x = TRUE)
+    good_init <- complyr::ivpim(y = df$y, z = df$z, a = df$a, X = df[, c("x1")],
+                            ps_model =  ps_model, link = "logit",
+                            init = inits[i, ])
+  }, silent = TRUE)
+  if (class(obj) != "try-error" && all.equal(obj$coef, good_init$coef)) {
+    idxcvg <- c(idxcvg, i)
+  }
+}
+```
+
+```{r, echo = F}
+plot(inits, pch = 16, cex = .3,
+     main = "Impact of initial guesses on Newton's method")
+points(inits[idxcvg, ], col = "#9b0000", cex = .8)
+points(good_init$coef[1], good_init$coef[2], pch = 19, col = "#9b0000", cex = 1)
+legend("topleft", legend = c("init", "converged", "root"),
+       pch = c(16, 1, 19), 
+       col = c("black", "#9b0000", "#9b0000"))
+```
+
+When dealing with a particular dataset, the best shot is to try with different initial guesses when the IVPIM cannot converge. The user is also encouraged to use the option `test.nleqslv = TRUE` to test different global strategies or increase `max.iter`. We generally don't recommend relaxing numerical tolerance because that would make the fitted model less accurate. 
+
+#### Empirical Convergence Rates 
+
+The following figures show the empirical convergence rates of the particular DGPs we designed in different sample sizes and with compliance rates ranging from 0.1 to 1 (n_sim = 2000). The script for this simulation is `conv_test.R`. The output file is `out/ivpim_conv_rates.csv`. The log file is `out/ivpim_conv_rates.log`.
+
+It's important to realize that the following estimation only reflects the convergence rate for the particular simulation data generating processes we use. It's also conservative because we only try a single initial guess with a pure Newton's method solver. 
+
+```{r, echo = F}
+ivpim_conv_rates <- read.csv("out/ivpim_conv_rates.csv")
+p1 <- ggplot(ivpim_conv_rates, aes(n_obs, p_c, fill = rct_conv_rates)) +
+  scale_y_continuous(breaks = 1:10 / 10, ) +
+  scale_x_continuous(breaks = 1:10 * 40) +
+  geom_raster() +
+  geom_text(aes(label = sprintf("%.2f", round(rct_conv_rates, 2))), size = 3) +
+  scale_fill_gradient(low = "#F3E7E7", high = "#9b0000", guide = "none") +
+  labs(title = "RCT convergence rate",
+       x = "sample size",
+       y = "compliance rate") +
+  theme(aspect.ratio = 1,
+        panel.grid = element_blank(),
+        panel.background = element_blank(),
+        axis.ticks = element_blank(),
+        panel.border = element_blank(),
+        plot.title = element_text(hjust = 0.5, vjust = -3))
+
+p2 <- ggplot(ivpim_conv_rates, aes(n_obs, p_c, fill = obs_conv_rates)) +
+  scale_y_continuous(breaks = 1:10 / 10) +
+  scale_x_continuous(breaks = 1:10 * 40) +
+  geom_raster() +
+  geom_text(aes(label = sprintf("%.2f", round(rct_conv_rates, 2))), size = 3) +
+  scale_fill_gradient(low = "#F3E7E7", high = "#9b0000", guide = "none") +
+  labs(title = "OBS convergence rate",
+       x = "sample size",
+       y = "compliance rate") +
+  theme(aspect.ratio = 1,
+        panel.grid = element_blank(),
+        panel.background = element_blank(),
+        axis.ticks = element_blank(),
+        panel.border = element_blank(),
+        plot.title = element_text(hjust = 0.5, vjust = -3))
+
+p1 + p2
+```
+
+The compliance rate is only one aspect in that the DGPs for compliers and non-compliers, although very different, we don't change that in the simulation. The readers can imagine if the DGPs for compliers and non-compliers are the same, it won't pose too much of a challenge. But if the DGPs for compliers and non-compliers are extremely different, since you cannot distinguish compliers from non-compliers when they are per-protocol, it would be hard for most models trying to "fit" the data. The way complier and non-complier DGPs differ can be arbitrary, we believe changing the compliance rate is a good proxy to demonstrate that study design and data quality should always come first. 
+
+## Summary Tables
+
+* IV-PIM is the only method that can consistently estimate the complier PIM coefficients.
+* The empirical average of standard error estimator (SEE) is close to the empirical standard error of the estimator (SE) under large samples for all three methods due to the use of robust sandwich estimator. 
+* Only IV-PIM achieved the nominal 95% coverage probability.
+
+```{r, echo = F}
+is_cover <- function(est, se, val, level = 0.95) {
+  z = (est - val) / se
+  mean(abs(z) <= qnorm(1 - (1 - level) / 2))
+}
+rct_sim_table <- rct_results %>% 
+  group_by(p_c, n_obs, method) %>%
+  summarise(
+    p_conv = n() / 2000, # n_sim = 2000
+    alpha_bias = mean(alpha_hat - alpha),
+    alpha_empse = sd(alpha_hat),
+    alpha_see = mean(alpha_se),
+    alpha_cp = is_cover(alpha_hat, alpha_se, alpha),
+    beta_1_bias = mean(beta_1_hat - beta_1),
+    beta_1_empse = sd(beta_1_hat),
+    beta_1_see = mean(beta_1_se),
+    beta_1_cp = is_cover(beta_1_hat, beta_1_se, beta_1),
+    beta_2_bias = mean(beta_2_hat - beta_2),
+    beta_2_empse = sd(beta_2_hat),
+    beta_2_see = mean(beta_2_se),
+    beta_2_cp = is_cover(beta_2_hat, beta_2_se, beta_2),
+  .groups = "drop") %>% 
+  mutate(across(is.numeric, function(x){sprintf("%.3f", x)})) 
+# restore p_c, n_obs, p_conv digits
+rct_sim_table$p_c <- round(as.numeric(rct_sim_table$p_c), 2)
+rct_sim_table$n_obs <- round(as.numeric(rct_sim_table$n_obs))
+# rct_sim_table$p_conv <- round(as.numeric(rct_sim_table$p_conv), 3)
+
+# get presentable tables for the RCT simulation results 
+present_rct_sim_table <- function(varname) {
+  # get iv results
+  rct_var_iv <- rct_sim_table %>%
+    filter(method == "iv") %>%
+    select(p_c, n_obs, method, p_conv, contains(varname))
+  # get itt results
+  rct_var_itt <- rct_sim_table %>%
+    filter(method == "itt") %>%
+    select(p_c, n_obs, method, p_conv, contains(varname))
+  # get pp results
+  rct_var_pp <- rct_sim_table %>%
+    filter(method == "pp") %>%
+    select(p_c, n_obs, method, p_conv, contains(varname)) 
+  # bind the tables, 5:8 is Bias, SE, SEE, CP
+  tbl <- cbind(rct_var_iv[, -3], rct_var_itt[, 5:8], rct_var_pp[, 5:8])
+  # touch names and rounding
+  colnames(tbl) <- c(c("p_c", "n_obs", "p_conv"), 
+                     rep(c("Bias", "SE", "SEE", "CP"), 3))
+  tbl
+}
+
+```
+
+### RCT Tables
+
+#### alpha
+
+```{r, echo = F}
+# generate camera-ready tables using my custom functions and {kableExtra} package
+present_rct_sim_table("alpha") %>%
+  kbl(booktabs = T, align = "r", caption = "Simulation study on the estimation and inference of alpha in the randomized controlled trial") %>%
+  kable_classic() %>%
+  add_header_above(c(" " = 3, "Instrumental varible" = 4, "Itention-to-treat" = 4, "Per-protocol" = 4)) %>%
+  collapse_rows(columns = 1, valign = "top") %>% 
+  footnote(general = c("SE, empirical standard error of the estimator; 
+                        SEE, empirical average of the standard error estimator; 
+                        CP, empirical coverage rate of the 95% confidence interval. 
+                        Each entry is based on 2,000 replicates."))
+
+```
+
+#### beta_1
+
+```{r, echo = F}
+present_rct_sim_table("beta_1") %>%
+  kbl(booktabs = T, align = "r", caption = "Simulation study on the estimation and inference of beta_1 in the randomized controlled trial") %>%
+  kable_classic() %>%
+  add_header_above(c(" " = 3, "Instrumental varible" = 4, "Itention-to-treat" = 4, "Per-protocol" = 4)) %>%
+  collapse_rows(columns = 1, valign = "top") %>% 
+  footnote(general = c("SE, empirical standard error of the estimator; 
+                        SEE, empirical average of the standard error estimator; 
+                        CP, empirical coverage rate of the 95% confidence interval. 
+                        Each entry is based on 2,000 replicates."))
+```
+
+#### beta_2
+
+```{r, echo = F}
+present_rct_sim_table("beta_2") %>%
+  kbl(booktabs = T, align = "r", caption = "Simulation study on the estimation and inference of beta_2 in the randomized controlled trial") %>%
+  kable_classic() %>%
+  add_header_above(c(" " = 3, "Instrumental varible" = 4, "Itention-to-treat" = 4, "Per-protocol" = 4)) %>%
+  collapse_rows(columns = 1, valign = "top") %>% 
+  footnote(general = c("SE, empirical standard error of the estimator; 
+                        SEE, empirical average of the standard error estimator; 
+                        CP, empirical coverage rate of the 95% confidence interval. 
+                        Each entry is based on 2,000 replicates."))
+```
+
+### OBS Tables
+
+```{r, echo = F}
+obs_sim_table <- obs_results %>% 
+  group_by(p_c, n_obs, method) %>%
+  summarise(
+    p_conv = n() / 2000, # n_sim = 2000
+    alpha_bias = mean(alpha_hat - alpha),
+    alpha_empse = sd(alpha_hat),
+    alpha_see = mean(alpha_se),
+    alpha_cp = is_cover(alpha_hat, alpha_se, alpha),
+    beta_1_bias = mean(beta_1_hat - beta_1),
+    beta_1_empse = sd(beta_1_hat),
+    beta_1_see = mean(beta_1_se),
+    beta_1_cp = is_cover(beta_1_hat, beta_1_se, beta_1),
+    beta_2_bias = mean(beta_2_hat - beta_2),
+    beta_2_empse = sd(beta_2_hat),
+    beta_2_see = mean(beta_2_se),
+    beta_2_cp = is_cover(beta_2_hat, beta_2_se, beta_2),
+  .groups = "drop") %>% 
+  mutate(across(is.numeric, function(x){sprintf("%.3f", x)}))
+# restore p_c, n_obs, p_conv digits
+obs_sim_table$p_c <- round(as.numeric(obs_sim_table$p_c), 2)
+obs_sim_table$n_obs <- round(as.numeric(obs_sim_table$n_obs))
+
+# get presentable tables for the RCT simulation results 
+present_obs_sim_table <- function(varname) {
+  obs_var_iv_correct <- obs_sim_table %>%
+    filter(method == "iv-correct") %>%
+    select(p_c, n_obs, method, p_conv, contains(varname))
+  obs_var_iv_misspecified <- obs_sim_table %>%
+    filter(method == "iv-misspecified") %>%
+    select(p_c, n_obs, method, p_conv, contains(varname))
+  obs_var_iv_marginal <- obs_sim_table %>%
+    filter(method == "iv-marginal") %>%
+    select(p_c, n_obs, method, p_conv, contains(varname)) 
+  obs_var_pp <- obs_sim_table %>%
+    filter(method == "pp") %>%
+    select(p_c, n_obs, method, p_conv, contains(varname)) 
+  # bind the tables, 5:8 is Bias, SE, SEE, CP
+  tbl <- cbind(obs_var_iv_correct[, -3], obs_var_iv_misspecified[, 5:8], 
+               obs_var_iv_marginal[, 5:8], obs_var_pp[, 5:8])
+  # touch names and rounding
+  colnames(tbl) <- c(c("p_c", "n_obs", "p_conv"), 
+                     rep(c("Bias", "SE", "SEE", "CP"), 4))
+  tbl
+}
+```
+
+#### alpha 
+
+```{r, echo = F}
+present_obs_sim_table("alpha") %>%
+  kbl(booktabs = T, align = "r", caption = "Simulation study on the estimation and inference of alpha the observational study") %>%
+  kable_classic() %>%
+  add_header_above(c(" " = 3, "IV-correct" = 4, "IV-misspecified" = 4, "IV-marginal" = 4, "Per-protocol" = 4)) %>%
+  collapse_rows(columns = 1, valign = "top") %>% 
+  footnote(general = c("SE, empirical standard error of the estimator; 
+                        SEE, empirical average of the standard error estimator; 
+                        CP, empirical coverage rate of the 95% confidence interval. 
+                        Each entry is based on 2,000 replicates."))
+```
+
+#### beta_1
+
+```{r, echo = F}
+present_obs_sim_table("beta_1") %>%
+  kbl(booktabs = T, align = "r", caption = "Simulation study on the estimation and inference of beta_1 the observational study") %>%
+  kable_classic() %>%
+  add_header_above(c(" " = 3, "IV-correct" = 4, "IV-misspecified" = 4, "IV-marginal" = 4, "Per-protocol" = 4)) %>%
+  collapse_rows(columns = 1, valign = "top") %>% 
+  footnote(general = c("SE, empirical standard error of the estimator; 
+                        SEE, empirical average of the standard error estimator; 
+                        CP, empirical coverage rate of the 95% confidence interval. 
+                        Each entry is based on 2,000 replicates."))
+```
+
+#### beta_2
+
+```{r, echo = F}
+present_obs_sim_table("beta_2") %>%
+  kbl(booktabs = T, align = "r", caption = "Simulation study on the estimation and inference of beta_2 the observational study") %>%
+  kable_classic() %>%
+  add_header_above(c(" " = 3, "IV-correct" = 4, "IV-misspecified" = 4, "IV-marginal" = 4, "Per-protocol" = 4)) %>%
+  collapse_rows(columns = 1, valign = "top") %>% 
+  footnote(general = c("SE, empirical standard error of the estimator; 
+                        SEE, empirical average of the standard error estimator; 
+                        CP, empirical coverage rate of the 95% confidence interval. 
+                        Each entry is based on 2,000 replicates."))
+```
+
+## Visualization
+
+```{r}
+rct_results %>%
+  filter(p_c %in% c(0.8)) %>%
+  filter(n_obs %in% c(200, 400, 800, 1600)) %>%
+  mutate(across(method)) %>%
+  group_by(p_c, n_obs, method) %>%
+  mutate(alpha_empse = sd(alpha_hat),
+         alpha_ci_lower = alpha_hat - qnorm(0.975) * alpha_se,
+         alpha_ci_upper = alpha_hat + qnorm(0.975) * alpha_se,
+         alpha_z_score = (alpha_hat - 1) / alpha_se) %>%
+  mutate(covering = alpha_ci_lower < 1 & 1 < alpha_ci_upper) %>%
+  mutate(z_percent = percent_rank(abs(alpha_z_score))) %>%
+  arrange(desc(z_percent)) %>%
+  ggplot(aes(y = z_percent, x = alpha_hat)) +
+  geom_linerange(aes(xmin = alpha_ci_lower, xmax = alpha_ci_upper, color = covering)) +
+  geom_point(size = 0.01, color = "#adadad") +
+  geom_vline(xintercept = 1, lty = 2) +
+  geom_hline(yintercept = 0.95, lty = 3) +
+  facet_grid(rows = vars(n_obs), cols = vars(method), scale = "free_x") +
+  # facet_wrap(~ n_obs + method, labeller = "label_both", ncol = 3) +
+  labs(y = "Fractional centile of |z-score|",
+       title = paste0("Zipper plot - rearranged 95% confidence intervals over 2000 simulation (80% compliant)"),
+       x = "Odds ratio of treatment") +
+  theme(panel.border = element_rect(color = "282728", fill = NA, size = 1),
+        panel.background = element_blank()) +
+  scale_y_continuous(breaks = c(0.00, 0.50, 0.95)) +
+  #xlim(1 - 3, 1 + 3) +
+  scale_color_manual(values=c("#C6050B", "#dadfe1"))
+```

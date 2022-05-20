@@ -21,16 +21,15 @@ sim_one_rct <- function(n_obs = 200, p_c = 0.7, alpha = 1, beta_1 = 0.5, beta_2 
                            ps_model =  ps_model, link = "logit")
   sum_stat <- function(model_fit) {
     # get summary stats for downstream analysis
-    ss <- c(model_fit$termcd, model_fit$coef,
-            sqrt(diag(model_fit$vcov)))
-    names(ss) <- c("termcd", "alpha_hat", "beta_1_hat", "beta_2_hat",
+    ss <- c(model_fit$coef, sqrt(diag(model_fit$vcov)))
+    names(ss) <- c("alpha_hat", "beta_1_hat", "beta_2_hat",
                    "alpha_se", "beta_1_se", "beta_2_se")
     ss
   }
   results <- as.data.frame(rbind(sum_stat(itt_fit),
                                  sum_stat(pp_fit),
                                  sum_stat(iv_fit)))
-  results$methods <- c("itt", "pp", "iv")
+  results$method <- c("itt", "pp", "iv")
   results$n_obs <- n_obs
   results$p_c <- p_c
   results$alpha <- alpha
@@ -66,16 +65,15 @@ sim_one_obs <- function(n_obs = 200, p_c = 0.7, alpha = 1, beta_1 = 0.5, beta_2 
                                ps_model = ps_model_marginal, link = model)
   sum_stat <- function(model_fit) {
     # get summary stats for downstream analysis
-    ss <- c(model_fit$termcd, model_fit$coef,
-            sqrt(diag(model_fit$vcov)))
-    names(ss) <- c("termcd", "alpha_hat", "beta_1_hat", "beta_2_hat", "alpha_se", "beta_1_se", "beta_2_se")
+    ss <- c(model_fit$coef, sqrt(diag(model_fit$vcov)))
+    names(ss) <- c("alpha_hat", "beta_1_hat", "beta_2_hat", "alpha_se", "beta_1_se", "beta_2_se")
     ss
   }
   results <- as.data.frame(rbind(sum_stat(pp_fit),
                                  sum_stat(iv_correct_fit),
                                  sum_stat(iv_misspecified_fit),
                                  sum_stat(iv_marginal_fit)))
-  results$methods <- c("pp", "iv-correct", "iv-misspecified", "iv-marginal")
+  results$method <- c("pp", "iv-correct", "iv-misspecified", "iv-marginal")
   results$n_obs <- n_obs
   results$p_c <- p_c
   results$alpha <- alpha
@@ -89,30 +87,42 @@ simulate_ivpim <- function(sim_one = "rct", n_sim = 5, ...) {
   # use pbreplicate (replicate with progress bar)
   # to repeatedly simulate n_sim times
   sim_args <- list(...) # ... stores arguments to sim_one_*() functions
+  cat("Begin IVPIM simulation:\n")
   print(c(sim_type = sim_one, n_sim = n_sim, unlist(sim_args)))
   sim_result_list <- pbapply::pbreplicate(n_sim, { # replicate n_sim times
-    regular_iter <- FALSE # flag to mark regular iteration
-    while(!regular_iter) {
-      try({
-        if (sim_one == "rct") {
-          one_sim <- suppressWarnings(do.call(sim_one_rct, sim_args))
-        } else if (sim_one == "obs") {
-          one_sim <- suppressWarnings(do.call(sim_one_obs, sim_args))
-        } else { # default is rct, can add other sim_one types in the future
-          one_sim <- suppressWarnings(do.call(sim_one_rct, sim_args))
-        }
-        if (all(one_sim$termcd == 1)) { # regular if all termcd == 1
-          regular_iter <- TRUE
-        }
-      }, silent = TRUE)
-    }
-    # return the simulation result of this iteration, strip termcd (1st column)
-    sim_result <- one_sim[, -1]
+    one_iter <- try(
+      if (sim_one == "rct") {
+        do.call(sim_one_rct, sim_args)
+      } else if (sim_one == "obs") {
+        do.call(sim_one_obs, sim_args)
+      } else { # default is rct, can add other sim_one types in the future
+        stop("Simulation type `sim_one` must be 'rct' or 'obs'.")
+      },
+      silent = T
+    )
+    one_iter
   }, simplify = F)
-  # add simulation index (each index corresponds to the same data frame), then return all simulation results
-  all_sim_result <- do.call(rbind, sim_result_list)
-  all_sim_result$index <- rep(seq(n_sim), each = NROW(all_sim_result) / n_sim)
-  all_sim_result
+  failed_iter <- list()
+  j <- 0
+  for (i in 1:n_sim) {
+    if (class(sim_result_list[[i]]) == "try-error") {
+      j <- j + 1
+      failed_iter[[j]] <- data.frame(index = i, message = trimws(strsplit(sim_result_list[[i]][1], "\n")[[1]][2]))
+      sim_result_list[[i]] <- list(NULL)
+    } else {
+      sim_result_list[[i]]$index <- i
+    }
+  }
+  if (!is.null(failed_iter)) {
+    cat("Nonconvergent Iteration(s):\n")
+    cat("------\n")
+    print(do.call(rbind, failed_iter), row.names = FALSE)
+    cat("Note: ", paste0(length(failed_iter), "/", n_sim,
+               " (", length(failed_iter) / n_sim * 100, "%)",
+               " iterations failed to converge.\n"))
+    cat("------\n")
+  }
+  do.call(rbind, sim_result_list)
 }
 
 # simulate_ivpim(sim_one = "rct", n_sim = 10, n_obs = 200, p_c = 0.7, alpha = 1, beta_1 = 0.5, beta_2 = -0.7, model = "logit")

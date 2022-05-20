@@ -1,7 +1,9 @@
-nohup Rscript --vanilla sim_script.R rct 42 2000 0.6 1 0.5 -0.7 logit > ./log/nohup.rct.42.2000.6.txt &
-nohup Rscript --vanilla sim_script.R rct 42 2000 0.8 1 0.5 -0.7 logit > ./log/nohup.rct.42.2000.8.txt &
-nohup Rscript --vanilla sim_script.R rct 42 2000 1.0 1 0.5 -0.7 logit > ./log/nohup.rct.42.2000.0.txt &
+nohup Rscript --vanilla sim_script.R rct 42 2000 0.6 1 0.5 -0.7 logit > ./log/sim_rct_42_2000_0.6.log &
+nohup Rscript --vanilla sim_script.R rct 42 2000 0.8 1 0.5 -0.7 logit > ./log/sim_rct_42_2000_0.8.log &
+nohup Rscript --vanilla sim_script.R rct 42 2000 1.0 1 0.5 -0.7 logit > ./log/sim_rct_42_2000_1.0.log &
 
-nohup Rscript --vanilla sim_script.R obs 42 2000 0.6 1 0.5 -0.7 logit > ./log/nohup.obs.42.2000.6.txt &
-nohup Rscript --vanilla sim_script.R obs 42 2000 0.8 1 0.5 -0.7 logit > ./log/nohup.obs.42.2000.8.txt &
-nohup Rscript --vanilla sim_script.R obs 42 2000 1.0 1 0.5 -0.7 logit > ./log/nohup.obs.42.2000.0.txt &
+nohup Rscript --vanilla sim_script.R obs 42 2000 0.6 1 0.5 -0.7 logit > ./log/sim_obs_42_2000_0.6.log &
+nohup Rscript --vanilla sim_script.R obs 42 2000 0.8 1 0.5 -0.7 logit > ./log/sim_obs_42_2000_0.8.log &
+nohup Rscript --vanilla sim_script.R obs 42 2000 1.0 1 0.5 -0.7 logit > ./log/sim_obs_42_2000_1.0.log &
+
+nohup Rscript --vanilla conv_test.R > ./log/ivpim_conv_rates.log &
