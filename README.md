@@ -4,6 +4,8 @@ model
 Li Ge, Lu Mao.
 2022-05-20
 
+![2022 American Causal Inference Conference Poster](./ivpim_2022acic_poster.png)
+
 -   [2022 American Causal Inference Conference
     Abstract](#2022-american-causal-inference-conference-abstract)
 -   [Simulation Analysis](#simulation-analysis)

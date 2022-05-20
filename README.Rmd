@@ -4,6 +4,8 @@ author: Li Ge, Lu Mao.
 date: "`r Sys.Date()`"
 output: 
   github_document:
+    includes:
+      in_header: HEADER.md
     toc: true
     toc_depth: 5
 always_allow_html: true
@@ -25,7 +27,6 @@ knitr::opts_chunk$set(
 * We intentionally separated the analysis and implementation of the instrumental variable probabilistic index models (IVPIM) into different repositories. This repository contains scripts for conducting the simulation, output files, log files, analysis, and summary results.
 * [{complyr}](https://github.com/ge-li/complyr) implements the IVPIM method and has some generic data generating processes for studying non-compliance problems. 
 * [{upim}](https://github.com/ge-li/upim) implements the U-statistics probabilistic index model.
-
 
 ## 2022 American Causal Inference Conference Abstract
 <!-- badges: start -->
