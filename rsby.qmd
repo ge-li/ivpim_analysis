@@ -1,0 +1,218 @@
+---
+title: "RSBY Data Analysis"
+author: "Li Ge"
+format: html
+execute:
+  cache: true
+---
+
+## Set up and load cleaned data
+
+
+```{r}
+library(tidyverse)
+library(kableExtra)
+library(ivreg)
+library(complyr)
+```
+
+```{r}
+rsby <- read.csv("rsby.csv")
+head(rsby, 10)
+```
+
+## Table 4: Characteristics of RSBY study population.
+
+```{r}
+# Change column type to factors
+rsby_labeled <- rsby
+rsby_labeled$mechanism <- factor(rsby_labeled$mechanism, labels = c("low", "high"))
+rsby_labeled$assignment <- factor(rsby_labeled$assignment, labels = c("control", "treatment"))
+rsby_labeled$enrolled <- factor(rsby_labeled$enrolled, labels = c("no", "yes"))
+table1::table1(
+  ~ enrolled + mechanism + district_id + expenditure | assignment,
+  data = rsby_labeled
+  %>% filter(!is.na(expenditure)),
+  caption = "Table 2 - Stratified by assignment and district",
+  footnote = c(
+    "1. Expenditure unit: Indian Rupee (INR)",
+    "2. District: Gulbarga vs. Mysore. Unfortunately the original data doesn't contain description about how the `district_id` maps to district name.", 
+    "3. 926 (8.35%) households are removed due to missing expenditure value."
+  )
+) %>%
+  table1::t1kable(booktabs = T)
+```
+
+## Figure 2 -  Right-skewed outcome distribution in the RSBY data
+
+```{r}
+ggplot(rsby_labeled %>% na.omit(), aes(y = assignment, x = expenditure / 1e3)) +
+  geom_violin() + 
+  geom_point() + 
+  labs(x = "expenditure (unit: thousand INR)") + 
+  scale_x_sqrt() + 
+  stat_summary(fun = "mean", geom = "crossbar", color = "darkred", size = 0.2) + 
+  stat_summary(fun = "median", geom = "crossbar", color = "navy", size = 0.2) +
+  labs(title = "Figure 2: Right-skewed outcome distribution in the RSBY data", 
+       subtitle = "Medians and means are marked by blue and red lines, respectively; x-axis is squareroot-scaled.")
+```
+
+## Table 5: 2SLS estimates for the cATE.
+
+```{r}
+ivreg(expenditure ~ mechanism + district_id | enrolled | assignment, data = rsby) %>% 
+  broom::tidy() %>% 
+  kbl(booktabs = T, digits = 3, caption = "Table 5: 2SLS estimates for the cATE.")
+```
+
+
+## Table 6: IVPIM estimates for the cPI (or cMWTE).
+
+```{r}
+# recode `district_id` to binary `district` 
+rsby$district <- as.numeric(rsby$district_id == "26")
+# fit the IVPIM model
+iv_pim_conditional_full <- ivpim(
+  y = rsby$expenditure,
+  z = rsby$assignment,
+  a = rsby$enrolled,
+  X = rsby[, c("mechanism", "district")],
+  link = "logit",
+  ps_model = glm(assignment ~ mechanism + district, rsby, family = binomial(link = "logit"), x = TRUE)
+)
+```
+
+```{r}
+# show summary
+upim::summary_pim(iv_pim_conditional_full) %>%
+  select(term, estimate, std.error, prob.index, prob.index.se, statistic, p.value) %>%
+  mutate(across(where(is.numeric), round, digits = 3)) %>% 
+  kbl(booktabs = T, digits = 3, 
+      caption = "Table 6: IVPIM estimates for the cPI (or cMWTE).")
+```
+
+
+## Figure 3: Data missing not at random: 2SLS vs. IVPIM.
+
+
+```{r}
+# helper function
+get_sens_sum_stat <- function(df, tau = 0) {
+  df_truncated <- df %>% 
+    group_by(assignment) %>%
+    arrange(desc(expenditure)) %>% 
+    slice_tail(prop = 1 - tau)
+  
+  iv_ate_mod <- ivreg(expenditure ~ mechanism + district | enrolled | assignment, 
+                      data = df_truncated)
+  
+  iv_pim_mod <- ivpim(
+    y = df_truncated$expenditure,
+    z = df_truncated$assignment,
+    a = df_truncated$enrolled,
+    X = df_truncated[, c("mechanism", "district")],
+    link = "logit",
+    ps_model = glm(
+      assignment ~ mechanism + district,
+      df_truncated,
+      family = binomial(link = "logit"),
+      x = TRUE
+    ), 
+    nleqslv.global = "dbldog"
+  )
+  
+  iv_pim_sum_stat <- upim::summary_pim(iv_pim_mod) %>%
+    select(term, prob.index, prob.index.se, p.value) %>% 
+    rename(estimate = prob.index, std.error = prob.index.se)
+  iv_pim_sum_stat$term <- c("enrolled", "mechanism", "district")
+  
+  iv_lm_sum_stat <- iv_ate_mod %>% broom::tidy() %>% select(-statistic)
+  
+  sum_stat <- bind_rows(iv_lm_sum_stat, iv_pim_sum_stat)
+  sum_stat$trunc_rate <- tau
+  sum_stat$estimand <- c(rep("cATE", 4), rep("cMWTE", 3))
+  
+  sum_stat %>% 
+    select(trunc_rate, term, estimand, estimate, std.error, p.value)
+}
+```
+
+```{r}
+## takes ~20mins to run on my Macbook Pro (CPU: M1 Max; RAM: 32Gb)
+# truncation_rates <- seq(0, 0.2, by = 0.01)
+# trunc_res <- purrr::map_dfr(truncation_rates,
+#                            ~ get_sens_sum_stat(rsby, .x))
+## read the results for fast compling of the doc 
+trunc_res <- read.csv("trunc_res.csv")
+trunc_res %>% 
+  filter(trunc_rate <= 0.05, term == "enrolled") %>% 
+  pivot_wider(names_from = estimand, values_from = c(estimate, std.error, p.value)) %>%
+  select(-term)
+```
+
+
+```{r}
+trunc_res %>%
+  filter(term != "(Intercept)") %>%
+  ggplot(aes(x = trunc_rate, y = estimate)) +
+  facet_wrap(term ~ estimand, scales = "free_y", ncol = 2) +
+  geom_point() + 
+  geom_line(lty = 3) + 
+  geom_errorbar(aes(ymin = estimate - std.error * 1.96,
+                ymax = estimate + std.error * 1.96)) + 
+  labs(title = "Sensitivity Analysis: 2SLS vs IVPIM",
+       subtitle = "Truncated by percentiles of hospital expenditure in each arm", 
+       x = "truncation rate")
+```
+
+## Table 7: Enrollment complier causal effects (partial).
+```{r}
+tab7 <- trunc_res %>% 
+  filter(trunc_rate <= 0.05, term == "enrolled") %>% 
+  pivot_wider(names_from = estimand, values_from = c(estimate, std.error, p.value)) %>%
+  select(-term)
+tab7 <- tab7[, c(1, 2, 4, 6, 3, 5, 7)]
+names(tab7) <- c("truncation rate", "estimate", "SE", "p-value", "estimate", "SE", "p-value")
+tab7 %>% 
+  kbl(booktabs = T, digits = 2) %>%
+  kable_classic() %>%
+  add_header_above(c(" " = 1, "cATE" = 3, "cMWTE" = 3))
+```
+
+
+## Additional Analysis: Considering Interaction Term
+
+```{r}
+ivreg(
+  expenditure ~ mechanism + district_id + mechanism * district_id | enrolled | assignment,
+  data = rsby
+) %>%
+  broom::tidy() %>%
+  kbl(booktabs = T, digits = 2, caption = "Table S1: 2SLS estimates for cATE with interaction term")
+```
+
+```{r}
+# fit the IVPIM model
+iv_pim_interaction <- ivpim(
+  y = rsby$expenditure,
+  z = rsby$assignment,
+  a = rsby$enrolled,
+  X = model.matrix(~ mechanism*district - 1, rsby),
+  link = "logit",
+  ps_model = glm(assignment ~ mechanism + district, rsby, family = binomial(link = "logit"), x = TRUE)
+)
+```
+
+```{r}
+upim::summary_pim(iv_pim_interaction) %>%
+  select(term,
+         estimate,
+         std.error,
+         prob.index,
+         prob.index.se,
+         statistic,
+         p.value) %>% 
+  mutate(across(where(is.numeric), round, digits = 3)) %>%
+  kbl(booktabs = T, digits = 2, 
+      caption = "Table S2: IVPIM estimates for the cPI with interaction term.")
+```
