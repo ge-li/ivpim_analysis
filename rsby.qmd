@@ -17,7 +17,7 @@ library(complyr)
 ```
 
 ```{r}
-rsby <- read.csv("rsby.csv")
+rsby <- read_csv("rsby.csv", col_types = c("f", "f", "i", "i", "i", "d"))
 head(rsby, 10)
 ```
 

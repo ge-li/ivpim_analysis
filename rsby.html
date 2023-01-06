@@ -159,21 +159,23 @@ The following object is masked from 'package:dplyr':
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ivreg)</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(complyr)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell" data-hash="rsby_cache/html/unnamed-chunk-2_1c4b01f1980f4d46f837c6c4610a1d72">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>rsby <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"rsby.csv"</span>)</span>
+<div class="cell" data-hash="rsby_cache/html/unnamed-chunk-2_1478bf768461db56bbab8cecce18e7cb">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>rsby <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"rsby.csv"</span>, <span class="at">col_types =</span> <span class="fu">c</span>(<span class="st">"f"</span>, <span class="st">"f"</span>, <span class="st">"i"</span>, <span class="st">"i"</span>, <span class="st">"i"</span>, <span class="st">"d"</span>))</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(rsby, <span class="dv">10</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>   district_id village_id mechanism assignment enrolled expenditure
-1            4     328600         0          0        0        4000
-2            4     265600         0          0        0       35000
-3            4     283000         0          0        0         600
-4            4     285900         0          0        1        4000
-5            4     283000         0          1        1           0
-6            4     268700         1          1        1         300
-7            4    4403350         1          1        1          20
-8            4    4403360         1          1        1         500
-9            4     284000         1          1        1           0
-10           4     297300         1          0        1         600</code></pre>
+<pre><code># A tibble: 10 × 6
+   district_id village_id mechanism assignment enrolled expenditure
+   &lt;fct&gt;            &lt;dbl&gt;     &lt;dbl&gt;      &lt;dbl&gt;    &lt;dbl&gt;       &lt;dbl&gt;
+ 1 4               328600         0          0        0        4000
+ 2 4               265600         0          0        0       35000
+ 3 4               283000         0          0        0         600
+ 4 4               285900         0          0        1        4000
+ 5 4               283000         0          1        1           0
+ 6 4               268700         1          1        1         300
+ 7 4              4403350         1          1        1          20
+ 8 4              4403360         1          1        1         500
+ 9 4               284000         1          1        1           0
+10 4               297300         1          0        1         600</code></pre>
 </div>
 </div>
 </section>
